@@ -1,20 +1,18 @@
 import 'package:flutter/material.dart';
-import 'src/pages/login.dart';
+import 'src/routes/routes.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'login',
+      title: 'Flu-movie',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        
-        primarySwatch: Colors.blue,
-      ),
-      home: Loginpage()
+      initialRoute: '/',
+      routes:  obtenerRutas(),
+     
     );
   }
 }
