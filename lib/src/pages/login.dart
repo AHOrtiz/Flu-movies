@@ -4,6 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:login/src/widget/circle.dart';
 import 'package:login/src/widget/input_text.dart';
 
+import '../utils/utils.dart';
+
 class LoginPage extends StatefulWidget {
   @override
   _LoginpageState createState() => _LoginpageState();
@@ -19,21 +21,12 @@ class _LoginpageState extends State<LoginPage> {
   }
 
   _submit() {
-
-    // el ! es para sabes si esta invalido el form
-    if(!_formkey.currentState.validate()) { return; }
+    // el ! significa diferente
+    if (!_formkey.currentState.validate()) {
+      return;
+    }
 
     Navigator.pushReplacementNamed(context, 'Home');
-  }
-
-  String _validateEmail(String value) {
-    Pattern pattern =
-        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-    RegExp regex = new RegExp(pattern);
-    if (!regex.hasMatch(value))
-      return 'Enter Valid Email';
-    else
-      return null;
   }
 
   @override
@@ -50,12 +43,7 @@ class _LoginpageState extends State<LoginPage> {
           height: size.height,
           child: Stack(
             children: <Widget>[
-              Positioned(
-                  right: -size.width * 0.22,
-                  top: -size.width * 0.36,
-                  child: Circle(
-                      radius: size.width * 0.45,
-                      colors: [Colors.pink, Colors.pinkAccent])),
+              _circuloTopRigth(),
               Positioned(
                   left: -size.width * 0.15,
                   top: -size.width * 0.34,
@@ -87,7 +75,7 @@ class _LoginpageState extends State<LoginPage> {
                           ),
                           SizedBox(height: 30),
                           Text(
-                            "Hola de nuevo.\n Bienvenidos",
+                            "Hola de nuevo.\n Bienvenido",
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 fontSize: 18, fontWeight: FontWeight.w300),
@@ -106,7 +94,7 @@ class _LoginpageState extends State<LoginPage> {
                                     InputText(
                                       label: "Correo Electronico ",
                                       inputType: TextInputType.emailAddress,
-                                      validator: _validateEmail,
+                                      validator: validateEmail,
                                     ),
                                     InputText(
                                       label: "Contraseña",
@@ -167,5 +155,18 @@ class _LoginpageState extends State<LoginPage> {
             ],
           )),
     ));
+  }
+
+  _circuloTopRigth() {
+    final size = MediaQuery.of(context).size;
+
+    return Positioned(
+      right: -size.width * 0.22,
+      top: -size.width * 0.36,
+      child: Circle(
+        radius: size.width * 0.45,
+        colors: [Colors.pink, Colors.pinkAccent]
+      )
+    );
   }
 }
