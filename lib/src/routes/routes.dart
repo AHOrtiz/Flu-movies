@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:login/src/pages/detalle_pelicula.dart';
 import 'package:login/src/pages/home_page.dart';
 import 'package:login/src/pages/login.dart';
 import 'package:login/src/pages/producto_pages.dart';
@@ -10,6 +11,7 @@ Map<String, WidgetBuilder> obtenerRutas(){
     'singup'  :(BuildContext context)=> RegistrarsePage(),
     'Home'    :(BuildContext context)=> HomePage(),
     'producto':(BuildContext context)=> ProductosPage(),
+    'detalle' :(BuildContext context)=> DetallePeliculaPage()
   };
 }
 
