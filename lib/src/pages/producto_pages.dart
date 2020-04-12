@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:login/src/Provider/Productos_povider.dart';
 import 'package:login/src/models/pelicula_model.dart';
 import 'package:login/src/utils/utils.dart';
 
@@ -9,6 +10,7 @@ class ProductosPage extends StatefulWidget {
 
 class _ProductosPageState extends State<ProductosPage> {
   final formKey = GlobalKey<FormState>();
+  final peliculaProvider = new ProductosProvider();
 
   PeliculasModel peliculas = new PeliculasModel();
 
@@ -39,8 +41,10 @@ class _ProductosPageState extends State<ProductosPage> {
                 _crearNombre(),
                 // Crear año
                 _crearAo(),
-                _crearBoton(),
                 _crearDisponible(),
+                _crearActor(),
+                _crearSinopsis(),
+                _crearBoton(),
               ],
             )),
       )),
@@ -65,10 +69,10 @@ class _ProductosPageState extends State<ProductosPage> {
 
   Widget _crearAo() {
     return TextFormField(
-      initialValue: peliculas.year.toString(),
+      initialValue: peliculas.estreno.toString(),
       keyboardType: TextInputType.number,
-      decoration: InputDecoration(labelText: 'Año'),
-      onSaved: (value) => peliculas.year = int.parse(value),
+      decoration: InputDecoration(labelText: 'Estreno'),
+      onSaved: (value) => peliculas.estreno = int.parse(value),
       validator: (value) {
         if (isNumeric(value)) {
           return null;
@@ -78,7 +82,39 @@ class _ProductosPageState extends State<ProductosPage> {
       },
     );
   }
-    Widget _crearDisponible() {
+
+  Widget _crearActor() {
+    return TextFormField(
+      initialValue: peliculas.actor,
+      textCapitalization: TextCapitalization.sentences,
+      decoration: InputDecoration(labelText: 'Nombre  actor'),
+      onSaved: (value) => peliculas.actor = value,
+      validator: (value) {
+        if (value.length < 3) {
+          return 'Ingrese el nombre del actor';
+        } else {
+          return null;
+        }
+      },
+    );
+  }
+  Widget  _crearSinopsis() {
+     return TextFormField(
+      initialValue: peliculas.sinopsis,
+      textCapitalization: TextCapitalization.sentences,
+      decoration: InputDecoration(labelText: 'Sinopsis'),
+      onSaved: (value) => peliculas.sinopsis = value,
+      validator: (value) {
+        if (value.length < 3) {
+          return 'Ingrese sinopsis ';
+        } else {
+          return null;
+        }
+      }
+     );
+
+  }
+  Widget _crearDisponible() {
     return SwitchListTile(
       value: peliculas.disponible,
       activeColor: Colors.deepOrange,
@@ -100,15 +136,17 @@ class _ProductosPageState extends State<ProductosPage> {
     );
   }
 
- 
-
   void _submit() {
     if (!formKey.currentState.validate()) return;
 
     formKey.currentState.save();
-
+    
     print(peliculas.titulo);
-    print(peliculas.year);
-    print (peliculas.disponible);
+    print(peliculas.estreno);
+    print(peliculas.disponible);
+
+    peliculaProvider.crearProducto(peliculas);
   }
+
+ 
 }

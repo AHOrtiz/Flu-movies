@@ -161,12 +161,10 @@ class _LoginpageState extends State<LoginPage> {
     final size = MediaQuery.of(context).size;
 
     return Positioned(
-      right: -size.width * 0.22,
-      top: -size.width * 0.36,
-      child: Circle(
-        radius: size.width * 0.45,
-        colors: [Colors.pink, Colors.pinkAccent]
-      )
-    );
+        right: -size.width * 0.22,
+        top: -size.width * 0.36,
+        child: Circle(
+            radius: size.width * 0.45,
+            colors: [Colors.pink, Colors.pinkAccent]));
   }
 }

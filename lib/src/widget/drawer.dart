@@ -26,7 +26,12 @@ class DrawerWidget extends StatelessWidget {
               Navigator.pushNamed(context, 'producto');
             },
           ),
-          ListTile(title: Text("Item 2"), trailing: Icon(Icons.home)),
+          ListTile(title: Text("Mostrar lista de peliculas"), trailing: Icon(Icons.list),
+          onTap: (){
+            Navigator.pushNamed(context, 'lista');
+          },
+          ),
+
         ],
       ),
     );
