@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:login/src/Provider/Productos_povider.dart';
 import 'package:login/src/models/pelicula_model.dart';
 import 'package:login/src/utils/utils.dart';
@@ -10,24 +13,32 @@ class ProductosPage extends StatefulWidget {
 
 class _ProductosPageState extends State<ProductosPage> {
   final formKey = GlobalKey<FormState>();
+  final scaffoldKey = GlobalKey<ScaffoldState>();
   final peliculaProvider = new ProductosProvider();
 
   PeliculasModel peliculas = new PeliculasModel();
+  bool _guardando = false;
+  File foto;
 
   @override
   Widget build(BuildContext context) {
+    final PeliculasModel prodData = ModalRoute.of(context).settings.arguments;
+    if (prodData != null) {
+      peliculas = prodData;
+    }
     return Scaffold(
+      key: scaffoldKey,
       appBar: AppBar(
         title: Text("Peliculas"),
         backgroundColor: Colors.deepOrange,
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.photo_size_select_actual),
-            onPressed: () {},
+            onPressed: _seleccionarFoto,
           ),
           IconButton(
             icon: Icon(Icons.camera_alt),
-            onPressed: () {},
+            onPressed: _tomarFoto,
           )
         ],
       ),
@@ -38,6 +49,7 @@ class _ProductosPageState extends State<ProductosPage> {
             key: formKey,
             child: Column(
               children: <Widget>[
+                 _mostrarFoto(),
                 _crearNombre(),
                 // Crear año
                 _crearAo(),
@@ -98,22 +110,22 @@ class _ProductosPageState extends State<ProductosPage> {
       },
     );
   }
-  Widget  _crearSinopsis() {
-     return TextFormField(
-      initialValue: peliculas.sinopsis,
-      textCapitalization: TextCapitalization.sentences,
-      decoration: InputDecoration(labelText: 'Sinopsis'),
-      onSaved: (value) => peliculas.sinopsis = value,
-      validator: (value) {
-        if (value.length < 3) {
-          return 'Ingrese sinopsis ';
-        } else {
-          return null;
-        }
-      }
-     );
 
+  Widget _crearSinopsis() {
+    return TextFormField(
+        initialValue: peliculas.sinopsis,
+        textCapitalization: TextCapitalization.sentences,
+        decoration: InputDecoration(labelText: 'Sinopsis'),
+        onSaved: (value) => peliculas.sinopsis = value,
+        validator: (value) {
+          if (value.length < 3) {
+            return 'Ingrese sinopsis ';
+          } else {
+            return null;
+          }
+        });
   }
+
   Widget _crearDisponible() {
     return SwitchListTile(
       value: peliculas.disponible,
@@ -132,7 +144,7 @@ class _ProductosPageState extends State<ProductosPage> {
       label: Text('Guardar'),
       textColor: Colors.white,
       icon: Icon(Icons.save),
-      onPressed: _submit,
+      onPressed: (_guardando) ? null : _submit,
     );
   }
 
@@ -140,13 +152,55 @@ class _ProductosPageState extends State<ProductosPage> {
     if (!formKey.currentState.validate()) return;
 
     formKey.currentState.save();
-    
-    print(peliculas.titulo);
-    print(peliculas.estreno);
-    print(peliculas.disponible);
 
-    peliculaProvider.crearProducto(peliculas);
+    setState(() {
+      _guardando = true;
+    });
+
+    if (peliculas.id == null) {
+      peliculaProvider.crearProducto(peliculas);
+    } else {
+      peliculaProvider.editarProducto(peliculas);
+    }
+    // setState(() {
+    //     _guardando=false;
+    // });
+    mostrarSnackbar('Regisro guardado');
+    Navigator.pushNamed(context, 'lista');
   }
 
- 
+  void mostrarSnackbar(String mensaje) {
+    final snackbar = SnackBar(
+      content: Text(mensaje),
+      duration: Duration(milliseconds: 1500),
+    );
+    scaffoldKey.currentState.showSnackBar(snackbar);
+  }
+ Widget  _mostrarFoto(){
+    if(peliculas.fotoUrl !=null){
+      return Container();
+    }else{
+      return Image(
+        image: AssetImage('assets/no-image.png'),
+        height: 300.0,
+        fit: BoxFit.cover,
+
+
+        );
+    }
+
+  }
+
+  _seleccionarFoto() async {
+    foto = await ImagePicker.pickImage(source: ImageSource.gallery);
+    if (foto != null) {
+      // limpieza
+
+    }
+    setState(() {
+      
+    });
+  }
+
+  _tomarFoto() {}
 }

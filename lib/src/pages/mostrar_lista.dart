@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:login/src/Provider/Productos_povider.dart';
+
 import 'package:login/src/models/pelicula_model.dart';
 
 class MostrarLista extends StatelessWidget {
@@ -40,12 +41,13 @@ class MostrarLista extends StatelessWidget {
         color:Colors.red,
       ),
       onDismissed: (direccion){
-        //TODO borrar prodcuto
+        peliculasProvider.borrarProducto(producto.id);
+     
       },
           child: ListTile(
         title:  Text('${producto.titulo}- ${producto.estreno}'),
         subtitle: Text(producto.id),
-        onTap: ()=> Navigator.pushNamed(context, 'producto'),
+        onTap: ()=> Navigator.pushNamed(context, 'producto', arguments:producto ),
       ),
     );
   }

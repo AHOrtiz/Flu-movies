@@ -39,7 +39,7 @@ class PeliculasModel {
     );
 
     Map<String, dynamic> toJson() => {
-        "id"      : id,
+        // "id"      : id,
         "titulo"  : titulo,
         "estreno" : estreno,
         "actor"   : actor,
