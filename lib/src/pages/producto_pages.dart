@@ -49,12 +49,12 @@ class _ProductosPageState extends State<ProductosPage> {
             key: formKey,
             child: Column(
               children: <Widget>[
-                 _mostrarFoto(),
+                _mostrarFoto(),
                 _crearNombre(),
                 // Crear año
                 _crearAo(),
                 _crearDisponible(),
-                _crearActor(),
+                // _crearActor(),
                 _crearSinopsis(),
                 _crearBoton(),
               ],
@@ -176,31 +176,34 @@ class _ProductosPageState extends State<ProductosPage> {
     );
     scaffoldKey.currentState.showSnackBar(snackbar);
   }
- Widget  _mostrarFoto(){
-    if(peliculas.fotoUrl !=null){
+
+  Widget _mostrarFoto() {
+    if (peliculas.fotoUrl != null) {
       return Container();
-    }else{
+    } else {
       return Image(
-        image: AssetImage('assets/no-image.png'),
-        height: 300.0,
+        image: AssetImage(foto?.path ?? 'assets/no-image.png'),
         fit: BoxFit.cover,
-
-
-        );
+        height: 300.0,
+        
+      );
     }
-
   }
 
   _seleccionarFoto() async {
-    foto = await ImagePicker.pickImage(source: ImageSource.gallery);
+    _procesarImagen(ImageSource.gallery);
+  }
+
+  _tomarFoto() async {
+    _procesarImagen(ImageSource.camera);
+  }
+
+  _procesarImagen(ImageSource origen) async {
+    foto = await ImagePicker.pickImage(source: origen);
     if (foto != null) {
       // limpieza
 
     }
-    setState(() {
-      
-    });
+    setState(() {});
   }
-
-  _tomarFoto() {}
 }
