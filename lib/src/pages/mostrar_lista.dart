@@ -44,11 +44,28 @@ class MostrarLista extends StatelessWidget {
         peliculasProvider.borrarProducto(producto.id);
      
       },
-          child: ListTile(
+          child: Card(
+            child: Column(
+              children: <Widget>[
+                (producto.poster==null)
+                ? Image(image:AssetImage('assets/imagen.png'))
+                : FadeInImage(
+                  placeholder: AssetImage('assets/bote.gif'), 
+                  image: NetworkImage(producto.poster),
+                  height: 300.0,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                  ),
+                   ListTile(
         title:  Text('${producto.titulo}- ${producto.estreno}'),
         subtitle: Text(producto.id),
         onTap: ()=> Navigator.pushNamed(context, 'producto', arguments:producto ),
       ),
+      
+              ],
+            ),
+          )
     );
+   
   }
 }

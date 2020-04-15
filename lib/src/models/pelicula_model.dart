@@ -13,7 +13,7 @@ class PeliculasModel {
     String titulo;
     int estreno;
     String actor;
-    String fotoUrl;
+    String poster;
     String sinopsis;
     bool disponible;
 
@@ -22,7 +22,7 @@ class PeliculasModel {
         this.titulo='',
         this.estreno= 0,
         this.actor='',
-        this.fotoUrl,
+        this.poster,
         this.sinopsis='',
         this.disponible=true
     });
@@ -32,7 +32,7 @@ class PeliculasModel {
         titulo      : json["titulo"],
          estreno    : json["estreno"],
         actor       : json["actor"],
-        fotoUrl     : json["fotoUrl"],
+        poster     : json["poster"],
         sinopsis    :json["sinopsis"] ,
         disponible  : json["disponible"]
         
@@ -41,9 +41,8 @@ class PeliculasModel {
     Map<String, dynamic> toJson() => {
         // "id"      : id,
         "titulo"  : titulo,
-        "estreno" : estreno,
-        "actor"   : actor,
-        "fotoUrl" : fotoUrl,
+        "estreno" : estreno,      
+        "poster" : poster,
         "sinopsis": sinopsis,
         "disponible":disponible
     };

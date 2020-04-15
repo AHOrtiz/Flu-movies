@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:login/src/Provider/Productos_povider.dart';
+
 import 'package:login/src/models/pelicula_model.dart';
 import 'package:login/src/utils/utils.dart';
 
@@ -95,21 +96,21 @@ class _ProductosPageState extends State<ProductosPage> {
     );
   }
 
-  Widget _crearActor() {
-    return TextFormField(
-      initialValue: peliculas.actor,
-      textCapitalization: TextCapitalization.sentences,
-      decoration: InputDecoration(labelText: 'Nombre  actor'),
-      onSaved: (value) => peliculas.actor = value,
-      validator: (value) {
-        if (value.length < 3) {
-          return 'Ingrese el nombre del actor';
-        } else {
-          return null;
-        }
-      },
-    );
-  }
+  // Widget _crearActor() {
+  //   return TextFormField(
+  //     initialValue: peliculas.actor,
+  //     textCapitalization: TextCapitalization.sentences,
+  //     decoration: InputDecoration(labelText: 'Nombre  actor'),
+  //     onSaved: (value) => peliculas.actor = value,
+  //     validator: (value) {
+  //       if (value.length < 3) {
+  //         return 'Ingrese el nombre del actor';
+  //       } else {
+  //         return null;
+  //       }
+  //     },
+  //   );
+  // }
 
   Widget _crearSinopsis() {
     return TextFormField(
@@ -148,7 +149,7 @@ class _ProductosPageState extends State<ProductosPage> {
     );
   }
 
-  void _submit() {
+  void _submit()  async{
     if (!formKey.currentState.validate()) return;
 
     formKey.currentState.save();
@@ -156,6 +157,9 @@ class _ProductosPageState extends State<ProductosPage> {
     setState(() {
       _guardando = true;
     });
+    if (foto !=null){
+     peliculas.poster= await peliculaProvider.subirImagen(foto);
+    }
 
     if (peliculas.id == null) {
       peliculaProvider.crearProducto(peliculas);
@@ -178,11 +182,16 @@ class _ProductosPageState extends State<ProductosPage> {
   }
 
   Widget _mostrarFoto() {
-    if (peliculas.fotoUrl != null) {
-      return Container();
+    if (peliculas.poster != null) {
+      return FadeInImage(
+        image: NetworkImage(peliculas.poster),
+        placeholder: AssetImage('assets/bote.gif'),
+        height: 300.0,
+        fit: BoxFit.contain,
+      );
     } else {
       return Image(
-        image: AssetImage(foto?.path ?? 'assets/no-image.png'),
+        image: AssetImage(foto?.path ?? 'assets/imagen.png'),
         fit: BoxFit.cover,
         height: 300.0,
         
@@ -201,7 +210,8 @@ class _ProductosPageState extends State<ProductosPage> {
   _procesarImagen(ImageSource origen) async {
     foto = await ImagePicker.pickImage(source: origen);
     if (foto != null) {
-      // limpieza
+      peliculas.poster=null;
+      
 
     }
     setState(() {});
