@@ -10,7 +10,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flu-movie',
       debugShowCheckedModeBanner: false,
-      initialRoute: '/',
+      initialRoute: 'splash',
       routes:  obtenerRutas(),
      
     );

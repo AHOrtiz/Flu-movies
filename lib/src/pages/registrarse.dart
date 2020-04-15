@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:login/src/Provider/auth_api.dart';
 import 'package:login/src/widget/circle.dart';
-import 'package:login/src/widget/custom_dialog.dart';
+
 import 'package:login/src/widget/input_text.dart';
 
 import '../utils/utils.dart';
@@ -14,6 +15,10 @@ class RegistrarsePage extends StatefulWidget {
 
 class _RegistrarsePageState extends State<RegistrarsePage> {
   final _formkey = GlobalKey<FormState>();
+  final _authApiService = AuthApiService();
+
+  String _email = '', _password = '';
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -21,21 +26,29 @@ class _RegistrarsePageState extends State<RegistrarsePage> {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
   }
 
-  _submit() {
+  _submit() async {
+    if (_isLoading) {
+      return;
+    }
     // el ! significa diferente
-    if (!_formkey.currentState.validate()) { return; }
+    if (!_formkey.currentState.validate()) {
+      return;
+    }
 
-    Navigator.pushReplacementNamed(context, 'Home');
-    showDialog(
-      context: context,
-      builder: (BuildContext context) => CustomDialogWidget(
-        title: "¡Exito!",
-        description:
-            "Felicidades te has logueado correctamente, ahora puedes disfrutar de todo el contenido de Flu Movies.",
-        buttonText: "Cerrar",
-        alertType: 'success',
-      ),
-    );
+    setState(() {
+      _isLoading = true;
+    });
+
+    final isOk = await _authApiService.register(context,
+        email: _email, password: _password);
+
+    setState(() {
+      _isLoading = false;
+    });
+
+    if (isOk) {
+      Navigator.pushReplacementNamed(context, 'Home');
+    }
   }
 
   @override
@@ -106,24 +119,16 @@ class _RegistrarsePageState extends State<RegistrarsePage> {
                                 child: Column(
                                   children: <Widget>[
                                     InputText(
-                                        label: "Nombre Usuario ",
+                                        label: "Correo electronico",
+                                        inputType: TextInputType.emailAddress,
                                         validator: (String text) {
-                                          if (RegExp(r'^[a-zA-Z0-9]+$')
+                                          if (RegExp(patternEmail)
                                               .hasMatch(text)) {
-                                            if (text.isNotEmpty &&
-                                                text.length > 3) {
-                                              if (text.length < 10) {
-                                                return null;
-                                              }
-                                            }
+                                            _email = text;
+                                            return null;
                                           }
-                                          return "Usuario incorrecto";
+                                          return "Ingresa un Correo Valido";
                                         }),
-                                    InputText(
-                                      label: "Correo electronico",
-                                      inputType: TextInputType.emailAddress,
-                                      validator: validateEmail,
-                                    ),
                                     InputText(
                                       label: "Contraseña",
                                       isSecure: true,
@@ -131,6 +136,7 @@ class _RegistrarsePageState extends State<RegistrarsePage> {
                                         if (text.isNotEmpty &&
                                             text.length > 5) {
                                           if (text.length < 10) {
+                                            _password = text;
                                             return null;
                                           }
                                         }
@@ -192,8 +198,17 @@ class _RegistrarsePageState extends State<RegistrarsePage> {
                       color: Colors.white,
                     ),
                   ))),
+              _isLoading ? _loading() : Container()
             ],
           )),
+    ));
+  }
+
+  Widget _loading() {
+    return Positioned.fill(
+        child: Container(
+      color: Colors.black45,
+      child: Center(child: CupertinoActivityIndicator(radius: 15.0)),
     ));
   }
 }

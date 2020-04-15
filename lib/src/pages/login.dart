@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:login/src/Provider/auth_api.dart';
 import 'package:login/src/widget/circle.dart';
 import 'package:login/src/widget/input_text.dart';
 
@@ -13,6 +14,10 @@ class LoginPage extends StatefulWidget {
 
 class _LoginpageState extends State<LoginPage> {
   final _formkey = GlobalKey<FormState>();
+  final _authApiService = AuthApiService();
+
+  String _email = '', _password = '';
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -20,13 +25,29 @@ class _LoginpageState extends State<LoginPage> {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
   }
 
-  _submit() {
+  _submit() async {
+    if (_isLoading) {
+      return;
+    }
     // el ! significa diferente
     if (!_formkey.currentState.validate()) {
       return;
     }
 
-    Navigator.pushReplacementNamed(context, 'Home');
+    setState(() {
+      _isLoading = true;
+    });
+
+    final isOk = await _authApiService.login(context,
+        email: _email, password: _password);
+
+    setState(() {
+      _isLoading = false;
+    });
+
+    if (isOk) {
+      Navigator.pushReplacementNamed(context, 'Home');
+    }
   }
 
   @override
@@ -92,10 +113,16 @@ class _LoginpageState extends State<LoginPage> {
                                 child: Column(
                                   children: <Widget>[
                                     InputText(
-                                      label: "Correo Electronico ",
-                                      inputType: TextInputType.emailAddress,
-                                      validator: validateEmail,
-                                    ),
+                                        label: "Correo Electronico ",
+                                        inputType: TextInputType.emailAddress,
+                                        validator: (String text) {
+                                          if (RegExp(patternEmail)
+                                              .hasMatch(text)) {
+                                            _email = text;
+                                            return null;
+                                          }
+                                          return "Ingresa un Correo Valido";
+                                        }),
                                     InputText(
                                       label: "Contraseña",
                                       isSecure: true,
@@ -103,6 +130,7 @@ class _LoginpageState extends State<LoginPage> {
                                         if (text.isNotEmpty &&
                                             text.length > 5) {
                                           if (text.length < 10) {
+                                            _password = text;
                                             return null;
                                           }
                                         }
@@ -151,7 +179,8 @@ class _LoginpageState extends State<LoginPage> {
                     ],
                   ),
                 ),
-              ))
+              )),
+              _isLoading ? _loading() : Container()
             ],
           )),
     ));
@@ -166,5 +195,13 @@ class _LoginpageState extends State<LoginPage> {
         child: Circle(
             radius: size.width * 0.45,
             colors: [Colors.pink, Colors.pinkAccent]));
+  }
+
+  Widget _loading() {
+    return Positioned.fill(
+        child: Container(
+      color: Colors.black45,
+      child: Center(child: CupertinoActivityIndicator(radius: 15.0)),
+    ));
   }
 }
