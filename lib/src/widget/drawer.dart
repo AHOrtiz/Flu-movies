@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:login/src/utils/session.dart';
+// import 'package:login/src/utils/session.dart';
 
 class DrawerWidget extends StatelessWidget {
 
-  final _session = Session();
+  // final _session = Session();
   
   @override
   Widget build(BuildContext context) {
@@ -40,7 +40,7 @@ class DrawerWidget extends StatelessWidget {
             title: Text("Cerrar Sesión"),
             trailing: Icon(Icons.close),
             onTap: () {
-              _session.delete();
+              // _session.delete();
               Navigator.pushReplacementNamed(context, '/');
             },
           ),

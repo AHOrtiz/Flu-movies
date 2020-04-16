@@ -57,7 +57,7 @@ class MostrarLista extends StatelessWidget {
                   fit: BoxFit.cover,
                   ),
                    ListTile(
-        title:  Text('${producto.titulo}- ${producto.estreno}'),
+        title:  Text('${producto.titulo}- ${producto.estreno}-${producto.sinopsis}'),
         subtitle: Text(producto.id),
         onTap: ()=> Navigator.pushNamed(context, 'producto', arguments:producto ),
       ),

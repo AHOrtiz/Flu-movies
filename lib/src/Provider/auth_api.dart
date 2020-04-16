@@ -2,11 +2,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
-import 'package:login/src/utils/session.dart';
+// import 'package:login/src/utils/session.dart';
 import 'package:login/src/widget/custom_dialog.dart';
 
 class AuthApiService {
-  final _session = Session();
+  // final _session = Session();
 
   static const _apiKey = "AIzaSyCaiw3QBElkXP_nOactHzIF71Vr_Wybzx4";
   static const _apiHost =
@@ -34,7 +34,7 @@ class AuthApiService {
         final token = decodeResp['idToken'] as String;
         final expiresIn = decodeResp['expiresIn'] as String;
 
-        await _session.set(token, int.parse(expiresIn));
+        // await _session.set(token, int.parse(expiresIn));
 
         return true;
       } else if (response.statusCode == 400) {
@@ -69,7 +69,7 @@ class AuthApiService {
         final token = decodeResp['idToken'] as String;
         final expiresIn = decodeResp['expiresIn'] as String;
 
-        await _session.set(token, int.parse(expiresIn));
+        // await _session.set(token, int.parse(expiresIn));
         return true;
       } else if (response.statusCode == 400) {
         throw PlatformException(
