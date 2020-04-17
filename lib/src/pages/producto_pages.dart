@@ -18,7 +18,7 @@ class _ProductosPageState extends State<ProductosPage> {
   final peliculaProvider = new ProductosProvider();
 
   PeliculasModel peliculas = new PeliculasModel();
-  bool _guardando;
+  bool _guardando=false;
   File foto;
 
   @override
