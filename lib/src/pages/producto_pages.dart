@@ -18,7 +18,7 @@ class _ProductosPageState extends State<ProductosPage> {
   final peliculaProvider = new ProductosProvider();
 
   PeliculasModel peliculas = new PeliculasModel();
-  bool _guardando = false;
+  bool _guardando;
   File foto;
 
   @override
@@ -202,18 +202,25 @@ class _ProductosPageState extends State<ProductosPage> {
   _seleccionarFoto() async {
     _procesarImagen(ImageSource.gallery);
   }
+    
 
   _tomarFoto() async {
     _procesarImagen(ImageSource.camera);
   }
-
-  _procesarImagen(ImageSource origen) async {
-    foto = await ImagePicker.pickImage(source: origen);
-    if (foto != null) {
-      peliculas.poster=null;
-      
+  _procesarImagen(ImageSource origen)async{
+    foto= await ImagePicker.pickImage(
+      source:origen 
+      );
+      if(foto !=null){
+        peliculas.poster=null;
 
     }
-    setState(() {});
+    setState(() {
+      
+    });
+
   }
+
+  
+  
 }

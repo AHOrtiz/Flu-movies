@@ -36,7 +36,7 @@ class _RegistrarsePageState extends State<RegistrarsePage> {
     }
 
     setState(() {
-      _isLoading = true;
+   _isLoading = true;
     });
 
     final isOk = await _authApiService.register(context,
@@ -70,13 +70,13 @@ class _RegistrarsePageState extends State<RegistrarsePage> {
                   top: -size.width * 0.36,
                   child: Circle(
                       radius: size.width * 0.45,
-                      colors: [Colors.pink, Colors.pinkAccent])),
+                      colors: [Colors.purple, Colors.pinkAccent])),
               Positioned(
                   left: -size.width * 0.15,
                   top: -size.width * 0.34,
                   child: Circle(
                       radius: size.width * 0.35,
-                      colors: [Colors.orange, Colors.deepOrange])),
+                      colors: [Colors.blue, Colors.purpleAccent])),
               SingleChildScrollView(
                   child: Container(
                 width: size.width,
@@ -102,7 +102,7 @@ class _RegistrarsePageState extends State<RegistrarsePage> {
                           ),
                           SizedBox(height: 10),
                           Text(
-                            " Bienvenido",
+                            " Bienvenido a Flu-movie",
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 fontSize: 15, fontWeight: FontWeight.w300),
@@ -119,7 +119,7 @@ class _RegistrarsePageState extends State<RegistrarsePage> {
                                 child: Column(
                                   children: <Widget>[
                                     InputText(
-                                        label: "Correo electronico",
+                                        label: "Correo electrónico",
                                         inputType: TextInputType.emailAddress,
                                         validator: (String text) {
                                           if (RegExp(patternEmail)
@@ -170,7 +170,7 @@ class _RegistrarsePageState extends State<RegistrarsePage> {
                               CupertinoButton(
                                 onPressed: () =>
                                     Navigator.pushNamed(context, "/"),
-                                child: Text("Inicia sesion",
+                                child: Text("Inicia sesión",
                                     style: TextStyle(
                                         fontSize: 15,
                                         color: Colors.pinkAccent)),

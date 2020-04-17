@@ -23,8 +23,8 @@ class DrawerWidget extends StatelessWidget {
                 ),
               )),
           ListTile(
-            title: Text("CRUD"),
-            trailing: Icon(Icons.backup),
+            title: Text("Agregar peliculas"),
+            trailing: Icon(Icons.add),
             onTap: () {
               Navigator.pushNamed(context, 'producto');
             },
