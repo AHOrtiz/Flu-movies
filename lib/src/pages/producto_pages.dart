@@ -158,6 +158,7 @@ class _ProductosPageState extends State<ProductosPage> {
       _guardando = true;
     });
     if (foto !=null){
+     mostrarSnackbar('Regisro guardado');
      peliculas.poster= await peliculaProvider.subirImagen(foto);
     }
 
@@ -169,8 +170,7 @@ class _ProductosPageState extends State<ProductosPage> {
     // setState(() {
     //     _guardando=false;
     // });
-    mostrarSnackbar('Regisro guardado');
-    Navigator.pushNamed(context, 'lista');
+    Navigator.pushReplacementNamed(context, 'Home');
   }
 
   void mostrarSnackbar(String mensaje) {

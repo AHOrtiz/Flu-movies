@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:login/src/utils/session.dart';
 // import 'package:login/src/utils/session.dart';
 
 class SplashPage extends StatefulWidget {
@@ -10,7 +11,7 @@ class SplashPage extends StatefulWidget {
 
 class _SplashPageState extends State<SplashPage> {
 
-  // final _session = Session();
+  final _session = Session();
 
   @override
   void initState() { 
@@ -19,12 +20,12 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   chek() async {
-  //   final data = await _session.get();
-  //   if (data != null) {
-  //     Navigator.pushReplacementNamed(context, 'Home');
-  //   } else {
+    final token = await _session.token;
+    if (token != null) {
+      Navigator.pushReplacementNamed(context, 'Home');
+    } else {
       Navigator.pushReplacementNamed(context, '/');
-  //   }
+   }
   }
 
   @override

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:login/src/models/pelicula_model.dart';
 
 class CardCarouselWidgwt extends StatefulWidget {
-  final List<dynamic> peliculas;
+  final List<PeliculasModel> peliculas;
 
   CardCarouselWidgwt({@required this.peliculas});
 
@@ -21,20 +22,21 @@ class _CardCarouselWidgwtState extends State<CardCarouselWidgwt> {
             return ClipRRect(
               borderRadius: BorderRadius.circular(20.0),
               child: GestureDetector(
-                child: FadeInImage(
-                  image: NetworkImage(
-                      "https://images-na.ssl-images-amazon.com/images/I/71YwxjfhEiL._AC_SY606_.jpg"),
-                  placeholder: NetworkImage(
-                      "https://raw.githubusercontent.com/Irwing-Herrera/flutter-Peliculas/master/assets/img/placeholder.png"),
-                  fit: BoxFit.cover,
-                ),
+                child: widget.peliculas[index].poster != null
+                    ? FadeInImage(
+                        image: NetworkImage(widget.peliculas[index].poster),
+                        placeholder: NetworkImage(
+                            "https://raw.githubusercontent.com/Irwing-Herrera/flutter-Peliculas/master/assets/img/placeholder.png"),
+                        fit: BoxFit.cover)
+                    : Image(image: AssetImage('assets/imagen.png'), fit: BoxFit.cover),
                 onTap: () {
-                  Navigator.pushNamed(context, 'detalle');
+                  Navigator.pushNamed(context, 'detalle',
+                      arguments: widget.peliculas[index]);
                 },
               ),
             );
           },
-          itemCount: 10,
+          itemCount: widget.peliculas.length,
           itemWidth: _screenSize.width * 0.7,
           itemHeight: _screenSize.height * 0.5,
           layout: SwiperLayout.STACK),

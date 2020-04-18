@@ -1,30 +1,37 @@
-// import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 
-// import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+class Session {
+  
+  static final Session _instancia = new Session._internal();
 
-// // class Session {
-//   final key = "SESSION";
-//   final storage = new FlutterSecureStorage();
+  factory Session() {
+    return _instancia;
+  }
 
-//   set(String token, int expiresIn) async {
-//     final data = {
-//       "token": token,
-//       "expiresIn": expiresIn,
-//       "createdAt": DateTime.now().toString()
-//     };
-//     // Write value 
-//     await storage.write(key: key, value: jsonEncode(data));
-//   }
+  Session._internal();
 
-//   get() async {
-//     final result = await storage.read(key: key);
-//     if (result != null) {
-//       return jsonDecode(result);
-//     }
-//     return null;
-//   }
+  SharedPreferences _prefs;
 
-//   delete() async {
-//     storage.delete(key: key);
-//   }
-// }
+  initPrefs() async {
+    this._prefs = await SharedPreferences.getInstance();
+  }
+
+  // GET y SET del token
+  get token {
+    return _prefs.getString('token') ?? null;
+  }
+
+  set token( String value ) {
+    _prefs.setString('token', value);
+  }
+
+  // GET y SET del email
+  get email {
+    return _prefs.getString('email') ?? null;
+  }
+
+  set email( String value ) {
+    _prefs.setString('email', value);
+  }
+  
+}

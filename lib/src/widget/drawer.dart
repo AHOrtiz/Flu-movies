@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:login/src/utils/session.dart';
 // import 'package:login/src/utils/session.dart';
 
 class DrawerWidget extends StatelessWidget {
 
-  // final _session = Session();
+  final _session = Session();
   
   @override
   Widget build(BuildContext context) {
@@ -13,8 +14,8 @@ class DrawerWidget extends StatelessWidget {
         children: <Widget>[
           UserAccountsDrawerHeader(
               decoration: BoxDecoration(color: Colors.pinkAccent),
-              accountName: Text("Allison Herrera"),
-              accountEmail: Text("allis2789@gmail.com"),
+              accountName: Text("Bienvenido (a)"),
+              accountEmail: Text(_session.email),
               currentAccountPicture: CircleAvatar(
                 backgroundColor: Colors.white,
                 child: Text(
@@ -30,7 +31,7 @@ class DrawerWidget extends StatelessWidget {
             },
           ),
           ListTile(
-            title: Text("Mostrar lista de peliculas"),
+            title: Text("Lista de peliculas"),
             trailing: Icon(Icons.list),
             onTap: () {
               Navigator.pushNamed(context, 'lista');
@@ -40,7 +41,7 @@ class DrawerWidget extends StatelessWidget {
             title: Text("Cerrar Sesión"),
             trailing: Icon(Icons.close),
             onTap: () {
-              // _session.delete();
+              _session.token = null;
               Navigator.pushReplacementNamed(context, '/');
             },
           ),

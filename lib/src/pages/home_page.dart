@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:login/src/Provider/Productos_povider.dart';
 import 'package:login/src/widget/cardCarousel.dart';
 import 'package:login/src/widget/drawer.dart';
 
 class HomePage extends StatelessWidget {
+
+  final peliculasProvider = new ProductosProvider();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,6 +32,16 @@ class HomePage extends StatelessWidget {
   }
 
   Widget _carouselPeliculas() {
-    return CardCarouselWidgwt(peliculas: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+    return FutureBuilder(
+      future: peliculasProvider.cargarProductos(),
+      builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
+        if (snapshot.hasData) {
+          return CardCarouselWidgwt(peliculas: snapshot.data);
+        }
+        else {
+          return Container(height: 400,child: Center(child: CircularProgressIndicator()));
+        }
+      },
+    );
   }
 }

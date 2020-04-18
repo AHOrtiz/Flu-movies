@@ -48,6 +48,7 @@ class _RegistrarsePageState extends State<RegistrarsePage> {
 
     if (isOk) {
       Navigator.pushReplacementNamed(context, 'Home');
+      _authApiService.openDialogSuccess(context, 'Genial, ya podras disfrutar de todo el contenido de Flu Movies.');
     }
   }
 
