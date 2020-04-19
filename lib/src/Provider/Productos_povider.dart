@@ -81,4 +81,18 @@ class ProductosProvider {
     print(respData);
     return respData['secure_url'];
   }
+
+  Future<List<PeliculasModel>> buscarPelicula(String query) async {
+    List<PeliculasModel> listPeliculas = await cargarProductos();
+    final List<PeliculasModel> peliculasFiltradas = new List();
+
+    listPeliculas.forEach((p) {
+      if (p.titulo.toLowerCase().startsWith(query.toLowerCase())) {
+        peliculasFiltradas.add(p);
+      }
+    });
+
+    return peliculasFiltradas;
+  }
+
 }
